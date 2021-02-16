@@ -18,16 +18,44 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson";
 
 // Grab the data with d3
-d3.json(url, function(data){
-    console.log(data.features);
+d3.json(url, function(response){
+    console.log(response.features);
 
-    // Define a function we want to run once for each feature in the features array
-    // Give each feature a popup describing the place and magnitude of the earthquake
-    function createFeature(feature, layer){
-        layer.bindPopup(feature.properties.title + "<hr>"+ feature.properties.mag);
-    }
-    // Using the features array sent back in the API data, create a GeoJSON layer and add it to the map
-    var earthquakes = L.geoJSON(data.features, {
-    onEachFeature: createFeature
-  }).addTo(myMap);
+    // response.forEach(x => {
+    //     L.circle(
+    //         [x.features[2].geometry.coordinates[0], 
+    //         x.features[2].geometry.coordinates[1]
+    //         ]).bindPopup(x.features.properties.place+ "<hr>"+ x.features.properties.mag)
+    // });
+    
+//     // Define a function we want to run once for each feature in the features array
+//     // Give each feature a popup describing the place and magnitude of the earthquake
+//     function createFeature(feature, layer){
+//         layer.bindPopup(feature.properties.place + "<hr>"+ feature.properties.mag);
+//     }
+//     // Using the features array sent back in the API data, create a GeoJSON layer and add it to the map
+//     var earthquakes = L.geoJSON(response.features, {
+//     onEachFeature: createFeature
+//   }).addTo(myMap);
+
+    // var geojsonMarkerOptions = {
+    //     radius: 8,
+    //     fillColor: "#ff7800",
+    //     color: "#000",
+    //     weight: 1,
+    //     opacity: 1,
+    //     fillOpacity: 0.8
+    // };
+
+    L.geoJSON(response.features,{
+        pointToLayer: function (feature, latlng){
+            return L.circleMarker(latlng, {
+                color: '#000',
+                weight: 1,
+                fillColor: "#ff7800",
+                fillOpacity: 0.8,
+                radius: feature.properties.mag * 2.6
+            });
+        }
+    }).addTo(myMap);
 })
