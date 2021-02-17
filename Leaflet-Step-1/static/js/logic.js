@@ -21,24 +21,7 @@ var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.ge
 // Grab the data with d3
 d3.json(url, function(response){
     console.log(response.features);
-
-    // response.forEach(x => {
-    //     L.circle(
-    //         [x.features[2].geometry.coordinates[0], 
-    //         x.features[2].geometry.coordinates[1]
-    //         ]).bindPopup(x.features.properties.place+ "<hr>"+ x.features.properties.mag)
-    // });
     
-    // Define a function we want to run once for each feature in the features array
-    // Give each feature a popup describing the place and magnitude of the earthquake
-    // function createFeature(feature, layer){
-    //     layer.bindPopup(feature.properties.place + "<hr>"+ feature.properties.mag);
-    // }
-//     // Using the features array sent back in the API data, create a GeoJSON layer and add it to the map
-//     var earthquakes = L.geoJSON(response.features, {
-//     onEachFeature: createFeature
-//   }).addTo(myMap);
-
     // Function for changing color based on depth
     function chooseColor(depth) {
         if (depth <= 10){
@@ -58,6 +41,8 @@ d3.json(url, function(response){
     }
 
     // Create markers that reflect the magnitude of the earthquake by their size
+    // Marker color depends on depth
+    // Popup when clicked
     L.geoJSON(response.features,{
         pointToLayer: function (feature, latlng){
             // console.log(feature.geometry.coordinates[2]);
@@ -67,13 +52,7 @@ d3.json(url, function(response){
                 fillColor: chooseColor(feature.geometry.coordinates[2]),
                 fillOpacity: 0.8,
                 radius: feature.properties.mag * 2.6
-            }).bindPopup(feature.properties.place+ "<hr>"+ feature.properties.mag);
-        // OnEachFeature: function (feature, layer){
-        //     layer.on({
-        //         click: function(event){
-        //             myMap.
-        //     })
-        // }
+            }).bindPopup(feature.properties.place+ "<hr>"+ feature.properties.mag+"<hr>"+new Date(feature.properties.time));
         }
     }).addTo(myMap);
 })
