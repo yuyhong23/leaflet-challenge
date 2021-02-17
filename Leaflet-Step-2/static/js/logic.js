@@ -1,6 +1,6 @@
 // Define arrays to hold created city and state markers
-var earthquakeLayer = [];
-var tectonicLayer = [];
+var earthquakeMarker = [];
+var tectonicMarker = [];
 
 // Store our API endpoint inside url
 // USGS Magnitude 2.5+ Earthquakes, Past Week
@@ -31,7 +31,7 @@ d3.json(url, function(response){
     // Create markers that reflect the magnitude of the earthquake by their size
     // Marker color depends on depth
     // Popup when clicked
-    earthquakeLayer.push(L.geoJSON(response.features,{
+    earthquakeMarker.push(L.geoJSON(response.features,{
         pointToLayer: function (feature, latlng){
             // console.log(feature.geometry.coordinates[2]);
             return L.circleMarker(latlng, {
@@ -53,7 +53,7 @@ var tectonicData = "static/data/PB2002_boundaries.json";
 d3.json(tectonicData, function (data) {
     console.log("tectonicData", data);
 
-    tectonicLayer.push(L.geoJSON(data.features, {
+    tectonicMarker.push(L.geoJSON(data.features, {
         style: function (feature) {
             return {
                 color: "orange",
@@ -91,6 +91,9 @@ var outdoors = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{
     accessToken: API_KEY
 });
 
+// Create base layers
+var earthquakeLayer = L.layerGroup(earthquakeMarker);
+var tectonicLayer = L.layerGroup(tectonicMarker);
 
 // Define a baseMaps object to hold our base layers
 var baseMaps = {
@@ -119,6 +122,15 @@ L.control.layers(baseMaps, overlayMaps, {
     collapsed: true
 }).addTo(myMap);
 
+// Color for legend
+function getColor(d) {
+    return d > 90  ? '#ff0000' :
+           d > 70  ? '#ff6600' :
+           d > 50  ? '#ff9900' :
+           d > 30  ? '#ffcc66' :
+           d > 10  ? '#ccff66' :
+                     "#00ff00";
+}
 // Create legend
 var legend = L.control({ position: 'bottomright' });
 
