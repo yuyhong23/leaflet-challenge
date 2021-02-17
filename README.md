@@ -80,6 +80,7 @@ Here are the outside resources that I used for this assignment (as well as attem
     - https://leafletjs.com/examples/geojson/
     - https://leafletjs.com/examples/quick-start/
     - https://leafletjs.com/examples/layers-control/
+    - https://leafletjs.com/examples/choropleth/
     - https://gis.stackexchange.com/questions/193161/add-legend-to-leaflet-map
     - https://docs.mapbox.com/mapbox-gl-js/example/setstyle/
     - https://gis.stackexchange.com/questions/257820/is-it-possible-to-group-geojson-objects-polygons-in-a-layer
