@@ -31,14 +31,15 @@ d3.json(url, function(response){
     
     // Define a function we want to run once for each feature in the features array
     // Give each feature a popup describing the place and magnitude of the earthquake
-//     function createFeature(feature, layer){
-//         layer.bindPopup(feature.properties.place + "<hr>"+ feature.properties.mag);
-//     }
+    // function createFeature(feature, layer){
+    //     layer.bindPopup(feature.properties.place + "<hr>"+ feature.properties.mag);
+    // }
 //     // Using the features array sent back in the API data, create a GeoJSON layer and add it to the map
 //     var earthquakes = L.geoJSON(response.features, {
 //     onEachFeature: createFeature
 //   }).addTo(myMap);
 
+    // Function for changing color based on depth
     function chooseColor(depth) {
         if (depth <= 10){
             color = "#00ff00";
@@ -66,7 +67,13 @@ d3.json(url, function(response){
                 fillColor: chooseColor(feature.geometry.coordinates[2]),
                 fillOpacity: 0.8,
                 radius: feature.properties.mag * 2.6
-            });
+            }).bindPopup(feature.properties.place+ "<hr>"+ feature.properties.mag);
+        // OnEachFeature: function (feature, layer){
+        //     layer.on({
+        //         click: function(event){
+        //             myMap.
+        //     })
+        // }
         }
     }).addTo(myMap);
 })
