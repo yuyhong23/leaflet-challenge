@@ -24,15 +24,15 @@ d3.json(url, function(response){
     
     // Function for changing color based on depth
     function chooseColor(depth) {
-        if (depth <= 10){
+        if (depth < 10){
             color = "#00ff00";
-        }else if (depth <= 30){
+        }else if (depth < 30){
             color = "#ccff66";
-        }else if (depth <= 50){
+        }else if (depth < 50){
             color = "#ffcc66";
-        }else if (depth <= 70){
+        }else if (depth < 70){
             color = "#ff9900";
-        }else if (depth <= 90){
+        }else if (depth < 90){
             color = "#ff6600";
         }else{
             color = "#ff0000";
@@ -55,4 +55,34 @@ d3.json(url, function(response){
             }).bindPopup(feature.properties.place+ "<hr>"+ feature.properties.mag+"<hr>"+new Date(feature.properties.time));
         }
     }).addTo(myMap);
+
+    // Color for legend
+    function getColor(d) {
+        return d > 90  ? '#ff0000' :
+               d > 70  ? '#ff6600' :
+               d > 50  ? '#ff9900' :
+               d > 30  ? '#ffcc66' :
+               d > 10  ? '#ccff66' :
+                         "#00ff00";
+    }
+    // Create legend
+    var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [-10, 10, 30, 50, 70, 90],
+            labels = [];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+
+        return div;
+    };
+
+    legend.addTo(myMap);
 })
