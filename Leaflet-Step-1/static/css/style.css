@@ -13,7 +13,14 @@ html {
 .legend {
   line-height: 18px;
   color: #555;
+  background: #fff;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 6px 8px;
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+
 }
+
 .legend i {
   width: 18px;
   height: 18px;
