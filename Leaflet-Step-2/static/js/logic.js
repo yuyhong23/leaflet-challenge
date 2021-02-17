@@ -1,6 +1,6 @@
-// Define arrays to hold created city and state markers
-var earthquakeMarker = [];
-var tectonicMarker = [];
+// Create base layers
+var earthquakeLayer = L.layerGroup();
+var tectonicLayer = L.layerGroup();
 
 // Store our API endpoint inside url
 // USGS Magnitude 2.5+ Earthquakes, Past Week
@@ -31,7 +31,7 @@ d3.json(url, function(response){
     // Create markers that reflect the magnitude of the earthquake by their size
     // Marker color depends on depth
     // Popup when clicked
-    earthquakeMarker.push(L.geoJSON(response.features,{
+    L.geoJSON(response.features,{
         pointToLayer: function (feature, latlng){
             // console.log(feature.geometry.coordinates[2]);
             return L.circleMarker(latlng, {
@@ -42,8 +42,8 @@ d3.json(url, function(response){
                 radius: feature.properties.mag * 2.6
             }).bindPopup(feature.properties.place+ "<hr>"+ feature.properties.mag+"<hr>"+new Date(feature.properties.time));
         }
-    })
-    );
+    }).addTo(earthquakeLayer);
+    // earthquakeLayer.addTo(myMap);
 })
 
 // Load in tectonicplates GeoJson Data
@@ -53,7 +53,7 @@ var tectonicData = "static/data/PB2002_boundaries.json";
 d3.json(tectonicData, function (data) {
     console.log("tectonicData", data);
 
-    tectonicMarker.push(L.geoJSON(data.features, {
+    L.geoJSON(data.features, {
         style: function (feature) {
             return {
                 color: "orange",
@@ -62,8 +62,7 @@ d3.json(tectonicData, function (data) {
                 weight: 1.5
             }
         }
-    })
-    );
+    }).addTo(tectonicLayer);;
 })
 
 // Create tile layers
@@ -90,10 +89,6 @@ var outdoors = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{
     id: "outdoors-v11",
     accessToken: API_KEY
 });
-
-// Create base layers
-var earthquakeLayer = L.layerGroup(earthquakeMarker);
-var tectonicLayer = L.layerGroup(tectonicMarker);
 
 // Define a baseMaps object to hold our base layers
 var baseMaps = {
