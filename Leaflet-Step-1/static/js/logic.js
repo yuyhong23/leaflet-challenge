@@ -15,6 +15,7 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(myMap);
 
 // Store our API endpoint inside url
+// USGS Magnitude 2.5+ Earthquakes, Past Week
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson";
 
 // Grab the data with d3
@@ -28,8 +29,8 @@ d3.json(url, function(response){
     //         ]).bindPopup(x.features.properties.place+ "<hr>"+ x.features.properties.mag)
     // });
     
-//     // Define a function we want to run once for each feature in the features array
-//     // Give each feature a popup describing the place and magnitude of the earthquake
+    // Define a function we want to run once for each feature in the features array
+    // Give each feature a popup describing the place and magnitude of the earthquake
 //     function createFeature(feature, layer){
 //         layer.bindPopup(feature.properties.place + "<hr>"+ feature.properties.mag);
 //     }
@@ -38,21 +39,31 @@ d3.json(url, function(response){
 //     onEachFeature: createFeature
 //   }).addTo(myMap);
 
-    // var geojsonMarkerOptions = {
-    //     radius: 8,
-    //     fillColor: "#ff7800",
-    //     color: "#000",
-    //     weight: 1,
-    //     opacity: 1,
-    //     fillOpacity: 0.8
-    // };
+    function chooseColor(depth) {
+        if (depth <= 10){
+            color = "#00ff00";
+        }else if (depth <= 30){
+            color = "#ccff66";
+        }else if (depth <= 50){
+            color = "#ffcc66";
+        }else if (depth <= 70){
+            color = "#ff9900";
+        }else if (depth <= 90){
+            color = "#ff6600";
+        }else{
+            color = "#ff0000";
+        }
+        return color;
+    }
 
+    // Create markers that reflect the magnitude of the earthquake by their size
     L.geoJSON(response.features,{
         pointToLayer: function (feature, latlng){
+            // console.log(feature.geometry.coordinates[2]);
             return L.circleMarker(latlng, {
                 color: '#000',
                 weight: 1,
-                fillColor: "#ff7800",
+                fillColor: chooseColor(feature.geometry.coordinates[2]),
                 fillOpacity: 0.8,
                 radius: feature.properties.mag * 2.6
             });
