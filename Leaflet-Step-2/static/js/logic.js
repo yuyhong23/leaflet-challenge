@@ -95,7 +95,7 @@ d3.json(url, function(response){
 })
 
 // Load in tectonicplates GeoJson Data
-var tectonicData = "static/data/PB2002_plates.json";
+var tectonicData = "static/data/PB2002_boundaries.json";
 
 // Grab data with d3
 d3.json(tectonicData, function(data) {
