@@ -43,7 +43,6 @@ d3.json(url, function(response){
             }).bindPopup(feature.properties.place+ "<hr>"+ feature.properties.mag+"<hr>"+new Date(feature.properties.time));
         }
     }).addTo(earthquakeLayer);
-    // earthquakeLayer.addTo(myMap);
 })
 
 // Load in tectonicplates GeoJson Data
