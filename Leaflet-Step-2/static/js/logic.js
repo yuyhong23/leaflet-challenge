@@ -93,3 +93,22 @@ d3.json(url, function(response){
 
     legend.addTo(myMap);
 })
+
+// Load in tectonicplates GeoJson Data
+var tectonicData = "static/data/PB2002_plates.json";
+
+// Grab data with d3
+d3.json(tectonicData, function(data) {
+    console.log("tectonicData", data);
+
+    L.geoJSON(data.features, {
+        style: function(feature){
+            return{
+                color:"orange",
+                fillColor:"transparent",
+                fillOpacity: 0.2,
+                weight: 1.5
+            }
+        }
+    }).addTo(myMap);
+})
